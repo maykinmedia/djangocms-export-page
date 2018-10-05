@@ -1,11 +1,11 @@
+from test.plugins.tests.factories import PageFactory
+
 from django.test import RequestFactory, TestCase
 
 from cms.api import add_plugin
 from cms.models import Placeholder
 from meta.views import Meta
 from mock import patch
-
-from annefrank.plugins.tests.factories import PageFactory
 
 from ..export.common import Field, PageExport
 from ..export.docx import DocxPageExport
