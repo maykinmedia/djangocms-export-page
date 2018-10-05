@@ -1,12 +1,12 @@
-from django.test import RequestFactory, TestCase, override_settings
+from test.blog.tests.factories import BlogFactory
 
-from annefrank.blog.tests.factories import BlogFactory
+from django.test import RequestFactory, TestCase, override_settings
 
 from ..export.common import PageExport
 from ..export.docx import DocxPageExport
 
 
-@override_settings(ROOT_URLCONF='annefrank.blog.tests.urls_tests')
+@override_settings(ROOT_URLCONF='test.blog.tests.urls_tests')
 class ExportModelTests(TestCase):
     def setUp(self):
         self.object = BlogFactory()

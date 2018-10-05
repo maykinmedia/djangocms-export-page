@@ -105,6 +105,37 @@ add the following to the model class:
 
 It's better to put the PlaceholderField (here `content`) in a separate section.
 
+
+Static Placeholders
+-------------------
+
+If you also want to export the static placeholders of a page, some extra configuration
+is required. There is a setting called `EXPORT_STATIC_PLACEHOLDERS`.
+
+.. code-block:: python
+
+    EXPORT_STATIC_PLACEHOLDERS = {
+        'template_name': ['static_placeholder_code']
+    }
+
+So with the cms settings it will look like this:
+
+.. code-block:: python
+
+    # test.html
+    <div>
+        {% static_placeholder 'test-placeholder' %}
+    </div>
+
+    # settings.py
+    CMS_TEMPLATES = [
+        ('test.html', _('Test page')),
+    ]
+
+    EXPORT_STATIC_PLACEHOLDERS = {
+        'test.html': ['test-placeholder']
+    }
+
 .. |build-status| image:: https://travis-ci.org/maykinmedia/djangocms-export-page.svg?branch=develop
     :target: https://travis-ci.org/maykinmedia/djangocms-export-page
 

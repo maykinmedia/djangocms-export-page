@@ -3,9 +3,11 @@ from collections import namedtuple
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models.fields import CharField, TextField
 
-from cms.models import CMSPlugin, Placeholder
+from cms.models import CMSPlugin, Placeholder, StaticPlaceholder
 from cms.models.fields import PlaceholderField
 from djangocms_page_meta.utils import get_page_meta
+
+from djangocms_export_page import settings
 
 from ..utils import clean_value
 
@@ -118,6 +120,11 @@ class PageExport:
                 plugins = self.get_ordered_plugins(placeholder, self.language)
                 for plugin in plugins:
                     components.extend(self.get_components(plugin))
+            elif isinstance(section, StaticPlaceholder):
+                placeholder = section
+                plugins = self.get_ordered_plugins(placeholder.public, self.language)
+                for plugin in plugins:
+                    components.extend(self.get_components(plugin))
 
         return [s for s in sections if s.components]
 
@@ -137,6 +144,11 @@ class PageExport:
                     self.object,
                     self.get_defined_components(self.object, section['fields'])
                 ))
+        if hasattr(self.object, 'template'):
+            codes = settings.EXPORT_STATIC_PLACEHOLDERS.get(self.object.template)
+            if codes:
+                queryset = StaticPlaceholder.objects.filter(code__in=codes)
+                sections.extend(self.get_static_placeholders(queryset))
 
         if self.page_meta:
             sections.append(Section('Page meta-data', None, components=[
@@ -156,6 +168,14 @@ class PageExport:
                 placeholders.insert(0, Section(name, placeholder, []))
             else:
                 placeholders.append(Section(name, placeholder, []))
+
+        return placeholders
+
+    def get_static_placeholders(self, static_placeholders):
+        placeholders = []
+
+        for placeholder in static_placeholders:
+            placeholders.append(Section(placeholder.get_name(), placeholder, []))
 
         return placeholders
 
