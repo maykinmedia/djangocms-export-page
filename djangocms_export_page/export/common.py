@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from django.contrib.sites.shortcuts import get_current_site
-from django.db.models.fields import CharField, TextField
+from django.db.models import CharField, ForeignKey, TextField
 
 from cms.models import CMSPlugin, Placeholder, StaticPlaceholder
 from cms.models.fields import PlaceholderField
@@ -53,7 +53,7 @@ class PageExport:
     """
 
     FIELD_FILTERS = {
-        'is_content': lambda f: isinstance(f, (CharField, TextField, PlaceholderField)),
+        'is_content': lambda f: isinstance(f, (CharField, TextField, PlaceholderField, ForeignKey)),
         'is_not_choice': lambda f: not f.choices,
         'is_not_slug': lambda f: f.name != 'slug',
         'is_not_link': lambda f: not f.name.endswith('_link')
@@ -206,7 +206,6 @@ class PageExport:
         except AttributeError as error:
             # obj is a regular Django model instance
             instance, plugin = None, None
-
         if instance and plugin:
             components.append(Component(
                 self.get_component_name(instance, plugin=plugin),
@@ -255,8 +254,20 @@ class PageExport:
     def get_fields_with_values(self, instance, fields):
         fields_with_values = []
         for field_name, field in fields:
-            value = getattr(instance, field_name)
-            fields_with_values.append(Field(field.verbose_name, clean_value(value)))
+            if field.many_to_one or field.one_to_one:
+                relation = getattr(instance, field_name)
+                if relation:
+                    for relation_field in relation._meta.fields:
+                        if hasattr(relation, '_export_page_field_names') and relation_field.name in relation._export_page_field_names:
+                            value = getattr(relation, relation_field.name)
+                            cleaned_data = clean_value(value)
+                            if cleaned_data != None:
+                                fields_with_values.append(Field(relation_field.verbose_name, cleaned_data))
+            else:
+                value = getattr(instance, field_name)
+                cleaned_data = clean_value(value)
+                if cleaned_data != None:
+                    fields_with_values.append(Field(field.verbose_name, cleaned_data))
         return fields_with_values
 
     def get_fields(self, instance):

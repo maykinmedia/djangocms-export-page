@@ -65,7 +65,7 @@ CMS Page
 
 CMS Page don't need any extra configuration to work.
 
-If a Plugin has a ForeignKey that would behave like children,
+If a Plugin has a reverse ForeignKey that would behave like children,
 add the following to the CMSPlugin model class:
 
 .. code-block:: python
@@ -73,6 +73,10 @@ add the following to the CMSPlugin model class:
     _export_page = {
         'children': 'items'
     }
+
+    @property
+    def items(self):
+        return self.frequentlyaskedquestion_set.all()
 
 where `items` is a iterable attribute of the model class.
 
@@ -83,6 +87,13 @@ And for on the ForeignKey Django model class:
     _export_page = {
         'fields': ['name', ... ]
     }
+
+If you want to export the contents of a ForeignKey or OneToOneField inside the regular model you can use
+`_export_page_field_names`. Now these fields will be put in the some level as the plugin fields.
+
+.. code-block:: python
+
+    _export_page_field_names = ['number', 'title', 'lead', 'display_date', 'date', 'location']
 
 
 Django Model
