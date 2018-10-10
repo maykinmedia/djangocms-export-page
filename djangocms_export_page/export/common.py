@@ -161,7 +161,8 @@ class PageExport:
     def get_placeholders(self):
         placeholders = []
 
-        for placeholder in self.object.get_declared_placeholders(): # to always get the correct order
+        for declared_placeholder in self.object.get_declared_placeholders(): # to always get the correct order
+            placeholder = self.object.get_placeholders().get(slot=declared_placeholder.slot)
             name = self.get_section_name(placeholder)
             # Weird way to sort placeholders:
             if 'header' in placeholder.slot:
