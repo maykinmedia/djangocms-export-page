@@ -219,6 +219,11 @@ class PageExport:
             for child in getattr(obj, children_attr, []):
                 components.extend(self.get_defined_components(child))
                 components.extend(self.get_components(child))
+        elif hasattr(instance, '_export_page'):
+            children_attr = instance._export_page.get('children', '')
+            for child in getattr(instance, children_attr, []):
+                components.extend(self.get_defined_components(child))
+                components.extend(self.get_components(child))
 
         return components
 
