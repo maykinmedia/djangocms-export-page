@@ -1,5 +1,4 @@
-from test.plugins.tests.factories import PageFactory
-
+from cms.api import create_page
 from django.test import RequestFactory, TestCase
 
 from cms.api import add_plugin
@@ -7,14 +6,14 @@ from cms.models import Placeholder
 from meta.views import Meta
 from mock import patch
 
-from ..export.common import Field, PageExport
-from ..export.docx import DocxPageExport
+from djangocms_export_page.export.common import Field, PageExport
+from djangocms_export_page.export.docx import DocxPageExport
 
 
 class ExportPageTests(TestCase):
     def setUp(self):
         self.placeholder = Placeholder.objects.create(slot='test')
-        self.page = PageFactory()
+        self.page = create_page('test', 'test.html', 'nl')
         self.page.placeholders.add(self.placeholder)
         self.language = 'nl'
         self.request = RequestFactory().get('/nl/')
