@@ -1,5 +1,7 @@
-import factory 
+import factory
+
 from blogapp.models import Blog
+
 
 class BlogFactory(factory.django.DjangoModelFactory):
     class Meta:

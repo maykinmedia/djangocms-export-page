@@ -1,7 +1,6 @@
-from cms.api import create_page
 from django.test import RequestFactory, TestCase
 
-from cms.api import add_plugin
+from cms.api import add_plugin, create_page
 from cms.models import Placeholder
 from meta.views import Meta
 from mock import patch
