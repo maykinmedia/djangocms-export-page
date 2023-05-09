@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..utils import clean_value
+from djangocms_export_page.utils import clean_value
 
 
 class CleanValueTests(TestCase):
