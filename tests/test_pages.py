@@ -10,10 +10,14 @@ from djangocms_export_page.export.docx import DocxPageExport
 
 
 class ExportPageTests(TestCase):
+    """
+    Needs test template setup in settings TEMPLATES and CMS_TEMPLATES
+
+    """
+
     def setUp(self):
-        self.placeholder = Placeholder.objects.create(slot='test')
         self.page = create_page('test', 'test.html', 'nl')
-        self.page.placeholders.add(self.placeholder)
+        self.placeholder = self.page.placeholders.get(slot='test')
         self.language = 'nl'
         self.request = RequestFactory().get('/nl/')
 
@@ -27,7 +31,7 @@ class ExportPageTests(TestCase):
 
     def test_page_url(self):
         export = PageExport(self.request, self.page, language=self.language)
-        self.assertEqual(export.page_url, 'http://example.com/nl/')
+        self.assertEqual(export.page_url, 'http://example.com/nl/test/')
 
     @patch('djangocms_export_page.export.common.get_page_meta')
     def test_meta_extra_custom_props(self, mock):
