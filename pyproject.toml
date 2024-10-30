@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "djangocms-export-page"
+version = "0.1.6"
+description = "Export a Django CMS page or a model view to a DOCX document"
+readme = "README.rst"
+license = {text = "MIT"}
+authors = [{name = "Maykin Media", email = "support@maykinmedia.nl"}]
+keywords = ["django cms export docx"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Intended Audience :: Developers",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "django~=3.2.0",
+    "django-cms>=3.7,<4.0",
+    "djangocms-page-meta",
+    "python-docx",
+]
+
+[project.urls]
+Homepage = "https://github.com/maykinmedia/djangocms-export-page"
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "pytest-django",
+    "tox",
+    "isort",
+    "factory_boy",
+]
+pep8 = ["flake8"]
+coverage = ["pytest-cov"]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+]
+release = ["zest.releaser"]
+# 3rd party configuration
+testing = [
+    "pytest",
+    "pytest-django",
+    "tox",
+    "isort",
+    "factory_boy",
+]
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages]
+find = {namespaces = false}
+
+[tool.aliases]
+test = "pytest"
+
+[tool.distutils.bdist_wheel]
+universal = 1
+
+[tool.isort]
+combine_as_imports = true
+default_section = "THIRDPARTY"
+include_trailing_comma = false
+line_length = 88
+multi_line_output = 5
+skip = ["env", ".tox", ".history", ".eggs"]
+known_django = ["django"]
+known_first_party = ["djangocms_export_page"]
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.pep8]
+max-line-length = "88"
+exclude = "env,.tox,doc"
+
+[tool."zest.releaser"]
+create-wheel = "yes"
+# setuptools config
+# see http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
