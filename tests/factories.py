@@ -1,6 +1,6 @@
 import factory
 
-from blogapp.models import Blog
+from testapp.models import Blog
 
 
 class BlogFactory(factory.django.DjangoModelFactory):

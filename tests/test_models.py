@@ -1,8 +1,9 @@
 from django.test import RequestFactory, TestCase, override_settings
 
+from .factories import BlogFactory
+
 from djangocms_export_page.export.common import PageExport
 from djangocms_export_page.export.docx import DocxPageExport
-from annefrank.blog.tests.factories import BlogFactory
 
 
 @override_settings(ROOT_URLCONF='annefrank.blog.tests.urls_tests')

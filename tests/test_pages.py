@@ -3,7 +3,7 @@ from django.test import RequestFactory, TestCase
 from cms.api import add_plugin, create_page
 from cms.models import Placeholder
 from meta.views import Meta
-from mock import patch
+from unittest.mock import patch
 
 from djangocms_export_page.export.common import Field, PageExport
 from djangocms_export_page.export.docx import DocxPageExport

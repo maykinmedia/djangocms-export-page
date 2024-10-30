@@ -16,6 +16,10 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.admin',
+    "django.contrib.sites",
+    'cms',
+    'menus',
+    'treebeard',
 
     'djangocms_export_page',
 
@@ -49,3 +53,5 @@ TEMPLATES = [
 ]
 
 ROOT_URLCONF = 'testapp.urls'
+
+SITE_ID = 1
