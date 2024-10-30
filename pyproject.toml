@@ -7,7 +7,7 @@ name = "djangocms-export-page"
 version = "0.1.6"
 description = "Export a Django CMS page or a model view to a DOCX document"
 readme = "README.rst"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 authors = [{name = "Maykin Media", email = "support@maykinmedia.nl"}]
 keywords = ["django cms export docx"]
 classifiers = [
@@ -30,64 +30,68 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/maykinmedia/djangocms-export-page"
+Homepage = "https://github.com/maykinmedia/djangocms_export_page"
+Documentation = "http://djangocms_export_page.readthedocs.io/en/latest/"
+"Bug Tracker" = "https://github.com/maykinmedia/djangocms_export_page/issues"
+"Source Code" = "https://github.com/maykinmedia/djangocms_export_page"
 
 [project.optional-dependencies]
 tests = [
     "pytest",
     "pytest-django",
+    "pytest-cov",
     "tox",
     "isort",
-    "factory_boy",
+    "black",
+    "flake8",
 ]
-pep8 = ["flake8"]
-coverage = ["pytest-cov"]
 docs = [
     "sphinx",
     "sphinx-rtd-theme",
 ]
-release = ["zest.releaser"]
-# 3rd party configuration
-testing = [
-    "pytest",
-    "pytest-django",
-    "tox",
-    "isort",
-    "factory_boy",
+release = [
+    "bump-my-version",
 ]
 
-[tool.setuptools]
-zip-safe = false
-include-package-data = true
-
-[tool.setuptools.packages]
-find = {namespaces = false}
-
-[tool.aliases]
-test = "pytest"
-
-[tool.distutils.bdist_wheel]
-universal = 1
+[tool.setuptools.packages.find]
+include = ["djangocms_export_page*"]
+namespaces = true
 
 [tool.isort]
+profile = "black"
 combine_as_imports = true
-default_section = "THIRDPARTY"
-include_trailing_comma = false
-line_length = 88
-multi_line_output = 5
 skip = ["env", ".tox", ".history", ".eggs"]
-known_django = ["django"]
-known_first_party = ["djangocms_export_page"]
-sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+known_django = "django"
+known_first_party="djangocms_export_page"
+sections=["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+DJANGO_SETTINGS_MODULE = "testapp.settings"
 
-[tool.pep8]
-max-line-length = "88"
-exclude = "env,.tox,doc"
+[tool.bumpversion]
+current_version = "0.1.0"
+files = [
+    {filename = "pyproject.toml"},
+    {filename = "README.rst"},
+    {filename = "docs/conf.py"},
+]
 
-[tool."zest.releaser"]
-create-wheel = "yes"
-# setuptools config
-# see http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
+[tool.coverage.run]
+branch = true
+source = ["djangocms_export_page"]
+omit = [
+    # migrations run while django initializes the test db
+    "*/migrations/*",
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "if (typing\\.)?TYPE_CHECKING:",
+    "@(typing\\.)?overload",
+    "class .*\\(.*Protocol.*\\):",
+    "@(abc\\.)?abstractmethod",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+    "pass",
+]
