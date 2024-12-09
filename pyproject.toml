@@ -24,8 +24,8 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
     "django~=3.2.0",
-    "django-cms>=3.7,<4.0",
-    "djangocms-page-meta",
+    "django-cms>=4.1",
+    "djangocms-page-meta@git+https://github.com/maykinmedia/djangocms-page-meta@77f464d93bcc4cb525814632b92a82738da5ef8e",
     "python-docx",
 ]
 
@@ -40,6 +40,9 @@ tests = [
     "pytest",
     "pytest-django",
     "pytest-cov",
+    "factory-boy",
+    "django-autoslug",
+    "djangocms-text-ckeditor",
     "tox",
     "isort",
     "black",
