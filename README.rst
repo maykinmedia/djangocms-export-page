@@ -2,10 +2,10 @@
 Django CMS Export Page
 =================================================
 
-:Version: 0.1.0
+:Version: 0.2.0
 :Source: https://bitbucket.org/maykinmedia/djangocms-export-page
 :Keywords: ``django`` ``cms`` ``export`` ``docx``
-:PythonVersion: 3.4
+:PythonVersion: 3.11
 
 |build-status| |code-quality| |black| |coverage|
 
@@ -31,10 +31,9 @@ Installation
 Requirements
 ------------
 
-* Python 3.4 or above
-* setuptools 30.3.0 or above
-* Django 1.11 or above
-* Django CMS 3.4.6 or above
+* Python 3.11 or above
+* Django 3.2 or above
+* Django CMS 4.1 or above
 
 
 Install
