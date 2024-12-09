@@ -20,6 +20,11 @@ INSTALLED_APPS = [
     "cms",
     "menus",
     "treebeard",
+    "filer",
+    "easy_thumbnails",
+    "djangocms_text_ckeditor",
+    "meta",
+    "djangocms_page_meta",
     "djangocms_export_page",
     "testapp",
 ]
@@ -45,6 +50,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",
+                "sekizai.context_processors.sekizai",
             ],
         },
     },
@@ -53,3 +60,24 @@ TEMPLATES = [
 ROOT_URLCONF = "testapp.urls"
 
 SITE_ID = 1
+
+LANGUAGE_CODE = "nl"
+LANGUAGES = [
+    ("nl", "Dutch"),
+    ("en", "English"),
+]
+
+# (CMS) Page Meta settings
+META_SITE_PROTOCOL = "https"
+META_SITE_DOMAIN = "www.example.com"
+
+# CMS settings
+CMS_CONFIRM_VERSION4 = True
+
+CMS_TEMPLATES = [("test.html", "Test page")]
+
+CMS_PLACEHOLDER_CONF = {
+    None: {
+        "plugins": ["TextPlugin"],
+    },
+}

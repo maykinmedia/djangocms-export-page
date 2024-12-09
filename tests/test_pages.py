@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from django.test import RequestFactory, TestCase
 
-from cms.api import add_plugin, create_page
+from cms.api import add_plugin, create_page, create_page_content
 from meta.views import Meta
 
 from djangocms_export_page.export.common import Field, PageExport
@@ -16,12 +16,14 @@ class ExportPageTests(TestCase):
     """
 
     def setUp(self):
-        self.page = create_page("test", "test.html", "nl")
-        self.placeholder = self.page.placeholders.get(slot="test")
+        self.page = create_page("title nl", "test.html", "nl")
         self.language = "nl"
+        self.placeholder = self.page.get_placeholders(self.language).get(
+            slot="test",
+        )
         self.request = RequestFactory().get("/nl/")
 
-    def test_expost_non_implemented(self):
+    def test_export_non_implemented(self):
         with self.assertRaises(NotImplementedError):
             PageExport(self.request, self.page, language=self.language).export()
 
@@ -30,8 +32,18 @@ class ExportPageTests(TestCase):
         self.assertEqual(export.base_url, "http://example.com")
 
     def test_page_url(self):
+        create_page_content(
+            "en",
+            "title en",
+            self.page,
+        )
+
         export = PageExport(self.request, self.page, language=self.language)
-        self.assertEqual(export.page_url, "http://example.com/nl/test/")
+        self.assertEqual(export.page_url, "http://example.com/nl/title-nl/")
+
+        en_export = PageExport(self.request, self.page, language="en")
+        en_export = PageExport(self.request, self.page, language="en")
+        self.assertEqual(en_export.page_url, "http://example.com/en/title-en/")
 
     @patch("djangocms_export_page.export.common.get_page_meta")
     def test_meta_extra_custom_props(self, mock):
@@ -50,14 +62,14 @@ class ExportPageTests(TestCase):
         self.assertEqual(type(export_file), bytes)
 
     def test_page_with_body_text(self):
-        add_plugin(self.placeholder, "BodyTextPlugin", "nl", body="Some text")
+        add_plugin(self.placeholder, "TextPlugin", "nl", body="Some text")
         export = DocxPageExport(self.request, self.page, language=self.language)
         self.assertEqual(
             export.get_data()[0].components[0].fields[0].value, "Some text"
         )
 
     def test_page_with_control_char_in_text(self):
-        add_plugin(self.placeholder, "BodyTextPlugin", "nl", body="Some text \f")
+        add_plugin(self.placeholder, "TextPlugin", "nl", body="Some text \f")
         export = DocxPageExport(self.request, self.page, language=self.language)
         self.assertEqual(
             export.get_data()[0].components[0].fields[0].value, "Some text"

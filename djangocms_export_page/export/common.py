@@ -102,7 +102,7 @@ class PageExport:
 
     def get_page_url(self):
         return "{domain}{url}".format(
-            domain=self.get_base_url(), url=self.object.get_absolute_url()
+            domain=self.get_base_url(), url=self.object.get_absolute_url(self.language)
         )
 
     def export(self):
@@ -180,7 +180,7 @@ class PageExport:
         for (
             declared_placeholder
         ) in self.object.get_declared_placeholders():  # to always get the correct order
-            placeholder = self.object.get_placeholders().get(
+            placeholder = self.object.get_placeholders(self.language).get(
                 slot=declared_placeholder.slot
             )
             name = self.get_section_name(placeholder)
