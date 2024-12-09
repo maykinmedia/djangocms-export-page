@@ -6,7 +6,7 @@ from django.conf import settings
 class _Settings(object):
     @property
     def EXPORT_STATIC_PLACEHOLDERS(self):
-        return getattr(settings, 'EXPORT_STATIC_PLACEHOLDERS', {})
+        return getattr(settings, "EXPORT_STATIC_PLACEHOLDERS", {})
 
     def __getattr__(self, name):
         return globals()[name]

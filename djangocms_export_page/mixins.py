@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .constants import FILE_FORMATS
 
@@ -36,19 +36,23 @@ class ExportPageMixin:
     #         raise NotImplementedError
 
     def create_export_page_menu_entry(self, current_page_menu):
-        current_page_menu.add_break('export-page-break')
+        current_page_menu.add_break("export-page-break")
         file_formats = FILE_FORMATS.values()
 
         if len(file_formats) == 1:
             menu = current_page_menu
         else:
-            menu = current_page_menu.get_or_create_menu('export-page', _('Export'))
+            menu = current_page_menu.get_or_create_menu("export-page", _("Export"))
 
         for file_format in file_formats:
-            label = _('Export to {ext}').format(ext='.' + file_format.ext)
-            export_url = reverse('export-page:model', kwargs={
-                'app': self.object._meta.app_label,
-                'model': self.object._meta.model_name,
-                'pk': self.object.pk,
-                'file_format': file_format.name})
+            label = _("Export to {ext}").format(ext="." + file_format.ext)
+            export_url = reverse(
+                "export-page:model",
+                kwargs={
+                    "app": self.object._meta.app_label,
+                    "model": self.object._meta.model_name,
+                    "pk": self.object.pk,
+                    "file_format": file_format.name,
+                },
+            )
             menu.add_link_item(label, url=export_url)

@@ -7,7 +7,7 @@ Django CMS Export Page
 :Keywords: ``django`` ``cms`` ``export`` ``docx``
 :PythonVersion: 3.4
 
-|build-status| |requirements| |coverage|
+|build-status| |code-quality| |black| |coverage|
 
 |python-versions| |django-versions| |pypi-version|
 
@@ -147,8 +147,9 @@ So with the cms settings it will look like this:
         'test.html': ['test-placeholder']
     }
 
-.. |build-status| image:: https://travis-ci.org/maykinmedia/djangocms-export-page.svg?branch=develop
-    :target: https://travis-ci.org/maykinmedia/djangocms-export-page
+.. |build-status| image:: https://github.com/maykinmedia/djangocms-export-page/workflows/Run%20CI/badge.svg
+    :alt: Build status
+    :target: https://github.com/maykinmedia/djangocms-export-page/actions?query=workflow%3A%22Run+CI%22
 
 .. |requirements| image:: https://requires.io/github/maykinmedia/djangocms-export-page/requirements.svg?branch=develop
     :target: https://requires.io/github/maykinmedia/djangocms-export-page/requirements/?branch=develop
@@ -164,3 +165,10 @@ So with the cms settings it will look like this:
 
 .. |pypi-version| image:: https://img.shields.io/pypi/v/djangocms-export-page.svg
     :target: https://pypi.org/project/djangocms-export-page/
+
+.. |code-quality| image:: https://github.com/maykinmedia/djangocms-export-page/workflows/Code%20quality%20checks/badge.svg
+     :alt: Code quality checks
+     :target: https://github.com/maykinmedia/djangocms-export-page/actions?query=workflow%3A%22Code+quality+checks%22
+
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black

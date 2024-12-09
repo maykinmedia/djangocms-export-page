@@ -6,20 +6,20 @@ from docx.shared import Cm, Pt
 
 from .common import PageExport
 
-InlineStyle = namedtuple('InlineStyle', ['font', 'size', 'bold', 'italic'])
+InlineStyle = namedtuple("InlineStyle", ["font", "size", "bold", "italic"])
 
 
 class DocxPageExport(PageExport):
     margin = Cm(2)
-    font_name = 'Tahoma'
-    table_style = 'TableGrid'
+    font_name = "Tahoma"
+    table_style = "TableGrid"
     column_layout = [Cm(2.5), Cm(7), Cm(8)]
     row_sytle = [InlineStyle(None, Pt(8), bold=True, italic=False), None, None]
 
     def setup_document(self):
         doc = Document()
 
-        doc.styles['Normal'].font.name = self.font_name
+        doc.styles["Normal"].font.name = self.font_name
 
         section = doc.sections[0]
         section.left_margin = section.right_margin = self.margin
@@ -52,7 +52,7 @@ class DocxPageExport(PageExport):
         return handle.read()
 
     def get_row(self, field):
-        return [field.name, field.value, '']
+        return [field.name, field.value, ""]
 
     def add_table(self, rows, has_header=False, **kwargs):
         table = self.document.add_table(rows=0, cols=0)
