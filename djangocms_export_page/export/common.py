@@ -3,8 +3,10 @@ from collections import namedtuple
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import CharField, ForeignKey, TextField
 
-from cms.models import CMSPlugin, Placeholder, StaticPlaceholder
+from cms.models import CMSPlugin, Page, Placeholder
 from cms.models.fields import PlaceholderField
+
+from djangocms_alias.models import Alias
 from djangocms_page_meta.utils import get_page_meta
 
 from djangocms_export_page import settings
@@ -101,9 +103,14 @@ class PageExport:
         )
 
     def get_page_url(self):
-        return "{domain}{url}".format(
-            domain=self.get_base_url(), url=self.object.get_absolute_url(self.language)
-        )
+
+        # requires language to get teh URL
+        if isinstance(self.object, Page):
+            url = self.object.get_absolute_url(self.language)
+        else:
+            url = self.object.get_absolute_url()
+
+        return "{domain}{url}".format(domain=self.get_base_url(), url=url)
 
     def export(self):
         raise NotImplementedError
@@ -123,9 +130,9 @@ class PageExport:
                 plugins = self.get_ordered_plugins(placeholder, self.language)
                 for plugin in plugins:
                     components.extend(self.get_components(plugin))
-            elif isinstance(section, StaticPlaceholder):
-                placeholder = section
-                plugins = self.get_ordered_plugins(placeholder.public, self.language)
+            elif isinstance(section, Alias):
+                placeholder = section.get_placeholder(self.language)
+                plugins = self.get_ordered_plugins(placeholder, self.language)
                 for plugin in plugins:
                     components.extend(self.get_components(plugin))
 
@@ -150,9 +157,9 @@ class PageExport:
                     )
                 )
         if hasattr(self.object, "template"):
-            codes = settings.EXPORT_STATIC_PLACEHOLDERS.get(self.object.template)
+            codes = settings.EXPORT_STATIC_ALIASES.get(self.object.template)
             if codes:
-                queryset = StaticPlaceholder.objects.filter(code__in=codes)
+                queryset = Alias.objects.filter(static_code__in=codes)
                 sections.extend(self.get_static_placeholders(queryset))
 
         if self.page_meta:
@@ -259,11 +266,19 @@ class PageExport:
         in the placeholder fields.
         """
         field_names = field_names if field_names else obj._export_page["fields"]
-        model_fields = {f.name: f for f in obj._meta.fields}
-        fields = [(name, model_fields[name]) for name in field_names]
 
-        regular_fields = [f for f in fields if not isinstance(f[1], PlaceholderField)]
-        placeholder_fields = [f for f in fields if isinstance(f[1], PlaceholderField)]
+        model_fields = {f.name: f for f in obj._meta.fields}
+
+        regular_fields = []
+        placeholders = []
+
+        for field_name in field_names:
+            if field_name in model_fields:
+                regular_fields.append((field_name, model_fields[field_name]))
+            elif hasattr(obj, field_name):
+                attribute = getattr(obj, field_name)
+                if isinstance(attribute, Placeholder):
+                    placeholders.append(attribute)
 
         components = [
             Component(
@@ -273,8 +288,7 @@ class PageExport:
             )
         ]
 
-        for field_name, field in placeholder_fields:
-            placeholder = getattr(obj, field_name)
+        for placeholder in placeholders:
             plugins = self.get_ordered_plugins(placeholder, self.language)
             for plugin in plugins:
                 components.extend(self.get_components(plugin))
