@@ -31,10 +31,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/maykinmedia/djangocms_export_page"
-Documentation = "http://djangocms_export_page.readthedocs.io/en/latest/"
-"Bug Tracker" = "https://github.com/maykinmedia/djangocms_export_page/issues"
-"Source Code" = "https://github.com/maykinmedia/djangocms_export_page"
+Homepage = "https://github.com/maykinmedia/djangocms-export-page"
+"Bug Tracker" = "https://github.com/maykinmedia/djangocms-export-page/issues"
+"Source Code" = "https://github.com/maykinmedia/djangocms-export-page"
 
 [project.optional-dependencies]
 tests = [
