@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "djangocms_text_ckeditor",
     "meta",
+    "djangocms_alias",
     "djangocms_page_meta",
     "djangocms_export_page",
     "testapp",
