@@ -1,12 +1,14 @@
 from unittest.mock import patch
 
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 
 from cms.api import add_plugin, create_page, create_page_content
+
 from meta.views import Meta
 
 from djangocms_export_page.export.common import Field, PageExport
 from djangocms_export_page.export.docx import DocxPageExport
+from tests.factories import AliasFactory
 
 
 class ExportPageTests(TestCase):
@@ -22,6 +24,9 @@ class ExportPageTests(TestCase):
             slot="test",
         )
         self.request = RequestFactory().get("/nl/")
+
+        static_alias = AliasFactory(static_code="footer")
+        self.static_placeholder = static_alias.get_placeholder(self.language)
 
     def test_export_non_implemented(self):
         with self.assertRaises(NotImplementedError):
@@ -41,7 +46,6 @@ class ExportPageTests(TestCase):
         export = PageExport(self.request, self.page, language=self.language)
         self.assertEqual(export.page_url, "http://example.com/nl/title-nl/")
 
-        en_export = PageExport(self.request, self.page, language="en")
         en_export = PageExport(self.request, self.page, language="en")
         self.assertEqual(en_export.page_url, "http://example.com/en/title-en/")
 
@@ -73,4 +77,21 @@ class ExportPageTests(TestCase):
         export = DocxPageExport(self.request, self.page, language=self.language)
         self.assertEqual(
             export.get_data()[0].components[0].fields[0].value, "Some text"
+        )
+
+    @override_settings(EXPORT_STATIC_ALIASES={"test.html": ["footer"]})
+    def test_page_with_static_alias(self):
+
+        add_plugin(self.placeholder, "TextPlugin", "nl", body="Some text \f")
+
+        add_plugin(self.static_placeholder, "TextPlugin", "nl", body="footer info")
+
+        export = DocxPageExport(self.request, self.page, language=self.language)
+
+        self.assertEqual(
+            export.get_data()[0].components[0].fields[0].value, "Some text"
+        )
+
+        self.assertEqual(
+            export.get_data()[1].components[0].fields[0].value, "footer info"
         )

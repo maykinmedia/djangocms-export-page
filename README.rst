@@ -2,7 +2,7 @@
 Django CMS Export Page
 =================================================
 
-:Version: 0.2.0
+:Version: 0.2.1
 :Source: https://bitbucket.org/maykinmedia/djangocms-export-page
 :Keywords: ``django`` ``cms`` ``export`` ``docx``
 :PythonVersion: 3.11
@@ -116,16 +116,16 @@ add the following to the model class:
 It's better to put the PlaceholderField (here `content`) in a separate section.
 
 
-Static Placeholders
+Static Aliases
 -------------------
 
-If you also want to export the static placeholders of a page, some extra configuration
-is required. There is a setting called `EXPORT_STATIC_PLACEHOLDERS`.
+If you also want to export the static aliases of a page, some extra configuration
+is required. There is a setting called `EXPORT_STATIC_ALIASES`.
 
 .. code-block:: python
 
-    EXPORT_STATIC_PLACEHOLDERS = {
-        'template_name': ['static_placeholder_code']
+    EXPORT_STATIC_ALIASES = {
+        'template_name': ['static_alias_code']
     }
 
 So with the cms settings it will look like this:
@@ -134,7 +134,7 @@ So with the cms settings it will look like this:
 
     # test.html
     <div>
-        {% static_placeholder 'test-placeholder' %}
+        {% static_alias 'test-placeholder' %}
     </div>
 
     # settings.py
@@ -142,7 +142,7 @@ So with the cms settings it will look like this:
         ('test.html', _('Test page')),
     ]
 
-    EXPORT_STATIC_PLACEHOLDERS = {
+    EXPORT_STATIC_ALIASES = {
         'test.html': ['test-placeholder']
     }
 
