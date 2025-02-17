@@ -1,7 +1,6 @@
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from cms.api import get_page_draft
 from cms.toolbar.items import Break
 from cms.toolbar_base import CMSToolbar
 from cms.toolbar_pool import toolbar_pool
@@ -14,7 +13,7 @@ from .constants import FILE_FORMATS
 class ExportPageToolbar(CMSToolbar):
 
     def populate(self):
-        page = get_page_draft(self.request.current_page)
+        page = self.request.current_page
 
         if not page or not user_can_change_page(self.request.user, page=page):
             return
