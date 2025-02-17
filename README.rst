@@ -2,7 +2,7 @@
 Django CMS Export Page
 =================================================
 
-:Version: 0.2.1
+:Version: 0.2.2
 :Source: https://bitbucket.org/maykinmedia/djangocms-export-page
 :Keywords: ``django`` ``cms`` ``export`` ``docx``
 :PythonVersion: 3.11
