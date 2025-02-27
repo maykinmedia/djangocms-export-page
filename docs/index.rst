@@ -23,6 +23,7 @@ Features
    :caption: Contents:
 
    quickstart
+   changelog
 
 
 Indices and tables
