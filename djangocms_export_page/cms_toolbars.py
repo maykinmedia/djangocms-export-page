@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from cms.cms_toolbars import PAGE_MENU_IDENTIFIER
 from cms.toolbar.items import Break
 from cms.toolbar_base import CMSToolbar
 from cms.toolbar_pool import toolbar_pool
@@ -18,7 +19,7 @@ class ExportPageToolbar(CMSToolbar):
         if not page or not user_can_change_page(self.request.user, page=page):
             return
 
-        current_page_menu = self.toolbar.get_or_create_menu("page")
+        current_page_menu = self.toolbar.get_or_create_menu(PAGE_MENU_IDENTIFIER)
         position = self.get_position(current_page_menu)
 
         file_formats = FILE_FORMATS.values()
@@ -42,4 +43,7 @@ class ExportPageToolbar(CMSToolbar):
 
     def get_position(self, menu):
         # Last separator
-        return menu.find_items(Break)[-1].index
+        breaks = menu.find_items(Break)
+        if breaks:
+            return breaks[-1].index
+        return None
