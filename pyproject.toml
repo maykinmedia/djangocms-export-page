@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "djangocms-export-page"
-version = "0.2.2"
+version = "0.2.3"
 description = "Export a Django CMS page or a model view to a DOCX document"
 readme = "README.rst"
 license = {file = "LICENSE"}
@@ -74,7 +74,7 @@ testpaths = ["tests"]
 DJANGO_SETTINGS_MODULE = "testapp.settings"
 
 [tool.bumpversion]
-current_version = "0.2.2"
+current_version = "0.2.3"
 files = [
     {filename = "pyproject.toml"},
     {filename = "README.rst"},
