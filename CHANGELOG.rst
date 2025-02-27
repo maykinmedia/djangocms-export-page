@@ -2,6 +2,16 @@
 Changelog
 =========
 
+0.2.3 (2025-02-27)
+==================
+
+**Bugfixes and QoL Changes**
+
+* fix crash when page menu is empty
+
+**Documentation**
+
+* Add changelog
 
 0.2.2 (2025-02-17)
 ==================
