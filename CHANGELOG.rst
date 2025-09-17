@@ -2,6 +2,14 @@
 Changelog
 =========
 
+0.2.4 (2025-09-17)
+==================
+
+**Project Maintenance**
+
+* Allow django greater than 4
+
+
 0.2.3 (2025-02-27)
 ==================
 
